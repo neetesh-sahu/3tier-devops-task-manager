@@ -2,16 +2,16 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# COPY ONLY PACKAGE FILES
 COPY package*.json ./
 
-# INSTALL DEPENDENCIES
-RUN npm ci --silent
+RUN npm config set registry https://registry.npmjs.org/
 
-# COPY SOURCE CODE
+RUN npm ci --silent --no-audit --no-fund
+
 COPY . .
 
 ENV CI=false
+ENV GENERATE_SOURCEMAP=false
 
 RUN npm run build
 
