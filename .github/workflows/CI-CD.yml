@@ -1,0 +1,55 @@
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build-and-deploy:
+
+    runs-on: self-hosted
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Build Frontend
+      - name: Build Frontend Image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest ./frontend
+
+      # Build Backend
+      - name: Build Backend Image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest ./backend
+
+      # Push Frontend
+      - name: Push Frontend Image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+
+      # Push Backend
+      - name: Push Backend Image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+
+      # SSH Deploy
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd 3tier-devops-app
+            docker compose pull
+            docker compose up -d

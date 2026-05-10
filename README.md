@@ -1,14 +1,15 @@
 # 🚀 3-Tier DevOps Task Manager Application
 
-A fully containerized 3-tier DevOps project built using React, Node.js, MongoDB, Docker, Docker Compose, and Cloudflare Tunnel.
+A fully containerized 3-tier DevOps application built using React, Node.js, MongoDB, Docker, Docker Compose, GitHub Actions CI/CD, AWS EC2, and Cloudflare Tunnel.
 
-This project demonstrates modern DevOps concepts including:
+This project demonstrates real-world DevOps concepts including:
 
-- Multi-container applications
-- Container networking
+- Multi-container architecture
+- Docker networking
 - Persistent storage using Docker Volumes
-- REST APIs
-- Public application exposure using Cloudflare Tunnel
+- CI/CD automation
+- Public application exposure
+- Cloud deployment on AWS EC2
 
 ---
 
@@ -20,7 +21,7 @@ This project demonstrates modern DevOps concepts including:
 - Add Tasks
 - Delete Tasks
 - Mark Tasks as Completed
-- Live Task Statistics
+- Real-time Task Statistics
 - Responsive Dashboard Layout
 
 ---
@@ -48,7 +49,10 @@ This project demonstrates modern DevOps concepts including:
 - MongoDB Container
 - Docker Compose Orchestration
 - Docker Named Volumes
-- Public Access using Cloudflare Tunnel
+- GitHub Actions CI/CD
+- Docker Hub Integration
+- AWS EC2 Deployment
+- Cloudflare Tunnel Public Access
 
 ---
 
@@ -57,7 +61,7 @@ This project demonstrates modern DevOps concepts including:
 ```text
                  Internet Users
                         ↓
-              Cloudflare Tunnel
+               Cloudflare Tunnel
                         ↓
               React Frontend Container
                         ↓
@@ -68,7 +72,7 @@ This project demonstrates modern DevOps concepts including:
 
 ---
 
-# 🛠️ Tech Stack
+# ⚙️ Tech Stack
 
 ## Frontend
 
@@ -97,6 +101,9 @@ This project demonstrates modern DevOps concepts including:
 - Docker
 - Docker Compose
 - Docker Volumes
+- GitHub Actions
+- Docker Hub
+- AWS EC2
 - Cloudflare Tunnel
 
 ---
@@ -117,14 +124,19 @@ This project demonstrates modern DevOps concepts including:
 │   ├── Dockerfile
 │   └── package.json
 │
-├── docker-compose.yml
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
 │
-└── README.md
+├── docker-compose.yml
+├── .gitignore
+├── README.md
+└── setup.sh
 ```
 
 ---
 
-# ⚙️ Installation & Setup
+# 🚀 Local Setup
 
 ---
 
@@ -144,7 +156,7 @@ cd 3tier-devops-app
 
 ---
 
-# 3️⃣ Start Docker Containers
+# 3️⃣ Start Containers
 
 ```bash
 docker compose up --build
@@ -182,7 +194,7 @@ This project uses 3 containers:
 
 # 🗃️ MongoDB Persistence
 
-MongoDB data is stored using Docker Named Volumes.
+MongoDB data is persisted using Docker Named Volumes.
 
 ## Docker Compose Volume
 
@@ -219,7 +231,7 @@ docker volume inspect 3tier-devops-app_mongo-data
 
 ---
 
-# 🌐 Public Access using Cloudflare Tunnel
+# 🌐 Cloudflare Tunnel Setup
 
 Install Cloudflared:
 
@@ -239,10 +251,20 @@ sudo dpkg -i cloudflared-linux-amd64.deb
 cloudflared tunnel --url http://localhost:80
 ```
 
-Public URL Example:
+---
 
-```text
-https://random-name.trycloudflare.com
+# Run Tunnel in Background
+
+```bash
+nohup cloudflared tunnel --url http://localhost:80 > tunnel.log 2>&1 &
+```
+
+---
+
+# Get Tunnel URL
+
+```bash
+cat tunnel.log
 ```
 
 ---
@@ -289,30 +311,136 @@ PUT /tasks/:id
 
 ---
 
+# ☁️ AWS EC2 Deployment
+
+---
+
+# EC2 User Data Script
+
+Paste this in EC2 User Data while launching instance:
+
+```bash
+#!/bin/bash
+
+# Update Packages
+sudo apt update -y
+
+# Install Docker
+sudo apt install docker.io -y
+
+# Start Docker
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# Install Docker Compose
+sudo apt install docker-compose-v2 -y
+
+# Install Git
+sudo apt install git -y
+
+# Install Cloudflared
+wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+
+sudo dpkg -i cloudflared-linux-amd64.deb
+
+# Add Ubuntu User to Docker Group
+sudo usermod -aG docker ubuntu
+
+# Refresh Docker Group
+newgrp docker
+```
+
+---
+
+# 🔄 GitHub Actions CI/CD
+
+This project uses GitHub Actions for CI/CD automation.
+
+## CI/CD Workflow
+
+```text
+Git Push
+   ↓
+GitHub Actions
+   ↓
+Docker Build
+   ↓
+Docker Hub Push
+   ↓
+SSH into EC2
+   ↓
+docker compose pull
+   ↓
+docker compose up -d
+```
+
+---
+
+# GitHub Actions Workflow File
+
+```text
+.github/workflows/deploy.yml
+```
+
+---
+
+# Required GitHub Secrets
+
+| Secret Name | Purpose |
+|---|---|
+| DOCKERHUB_USERNAME | Docker Hub Username |
+| DOCKERHUB_TOKEN | Docker Hub Access Token |
+| EC2_HOST | EC2 Public IP |
+| EC2_SSH_KEY | EC2 PEM Private Key |
+
+---
+
+# 🚀 Deployment
+
+Push code:
+
+```bash
+git add .
+
+git commit -m "updated app"
+
+git push
+```
+
+GitHub Actions automatically:
+- Builds Docker images
+- Pushes images to Docker Hub
+- Deploys latest version to EC2
+
+---
+
 # 🧠 DevOps Concepts Covered
 
 - Multi-container Architecture
 - Docker Networking
 - Docker Compose
-- Named Volumes
-- REST APIs
+- Docker Volumes
 - Persistent Storage
-- Container Communication
-- Public Tunneling
+- REST APIs
+- CI/CD Automation
+- Docker Hub Registry
+- AWS EC2 Deployment
+- Cloudflare Tunnel
+- Infrastructure Automation
 
 ---
 
-# 🚀 Future Improvements
+# 🔥 Future Improvements
 
 - JWT Authentication
 - User Accounts
-- GitHub Actions CI/CD
-- Docker Hub Integration
-- AWS EC2 Deployment
 - Kubernetes Deployment
+- Terraform Infrastructure
 - Nginx Reverse Proxy
 - HTTPS Custom Domain
 - Monitoring with Prometheus & Grafana
+- Rolling Updates
+- Blue-Green Deployment
 
 ---
 
@@ -329,10 +457,12 @@ PUT /tasks/:id
 
 ---
 
-# ☁️ Production Deployment Plan
+# ☁️ Production Deployment Flow
 
 ```text
-GitHub
+Developer
+   ↓
+Git Push
    ↓
 GitHub Actions
    ↓
@@ -343,6 +473,8 @@ AWS EC2
 Docker Compose
    ↓
 Cloudflare Tunnel
+   ↓
+Public Application
 ```
 
 ---
