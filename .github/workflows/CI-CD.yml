@@ -21,7 +21,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+      #cleanup docker images and builder cache to free up space on self-hosted runner
+      - name: Cleanup Docker
+        run: |
+          docker system prune -af
+          docker builder prune -af
       # Build Frontend
       - name: Build Frontend Image
         run: |
