@@ -12,7 +12,7 @@ function App() {
 
     try {
 
-      const res = await axios.get("http://localhost:5000/tasks");
+      const res = await axios.get("/tasks");
 
       setTasks(res.data);
 
@@ -37,7 +37,7 @@ function App() {
     try {
 
       await axios.post(
-        "http://localhost:5000/tasks",
+        "tasks",
         {
           task: task
         }
@@ -60,7 +60,7 @@ function App() {
     try {
 
       await axios.delete(
-        `http://localhost:5000/tasks/${id}`
+        `/tasks/${id}`
       );
 
       fetchTasks();
@@ -78,7 +78,7 @@ function App() {
     try {
 
       await axios.put(
-        `http://localhost:5000/tasks/${id}`
+        `/tasks/${id}`
       );
 
       fetchTasks();

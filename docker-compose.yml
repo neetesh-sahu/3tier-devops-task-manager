@@ -1,5 +1,3 @@
-version: '3'
-
 services:
 
   frontend:
@@ -11,13 +9,16 @@ services:
 
   backend:
     build: ./backend
+    container_name: backend
+    restart: always
     ports:
       - "5000:5000"
     depends_on:
       - mongo
-
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/taskdb
   mongo:
-    image: mongo:latest
+    image: mongo:7
     container_name: mongo
     restart: always
     ports:
