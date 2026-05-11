@@ -17,7 +17,7 @@ services:
       - mongo
 
   mongo:
-    image: mongo:7
+    image: mongo:latest
     container_name: mongo
     restart: always
     ports:
