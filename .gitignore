@@ -78,6 +78,3 @@ mongodb-data/
 *.swp
 *.swo
 *~
-node_modules
-build
-.git
