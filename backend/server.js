@@ -8,9 +8,17 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log(err));
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB Connected");
+  } catch (err) {
+    console.log(err);
+    setTimeout(connectDB, 5000);
+  }
+};
+
+connectDB();
 // Schema
 const TaskSchema = new mongoose.Schema({
 
