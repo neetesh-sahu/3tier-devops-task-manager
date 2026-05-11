@@ -63,6 +63,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            cd 3tier-devops-task-manager
             cd 3tier-devops-app
             docker compose up --build
            
