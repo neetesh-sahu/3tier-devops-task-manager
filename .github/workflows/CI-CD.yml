@@ -57,7 +57,7 @@ jobs:
 
       # SSH Deploy
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.0.6
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
@@ -65,3 +65,4 @@ jobs:
           script: |
             cd 3tier-devops-app
             docker compose up --build
+           
