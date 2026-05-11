@@ -64,5 +64,4 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd 3tier-devops-app
-            docker compose pull
-            docker compose up -d --build
+            docker compose up --build
