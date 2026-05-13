@@ -55,12 +55,12 @@ jobs:
       # Push Frontend
       - name: Push Frontend Image
         run: |
-          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
 
       # Push Backend
       - name: Push Backend Image
         run: |
-          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
 
       # SSH Deploy
       - name: Deploy to EC2
