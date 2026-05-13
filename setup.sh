@@ -9,9 +9,6 @@ sudo apt install docker.io -y
 # Add Ubuntu User to Docker Group
 sudo usermod -aG docker ubuntu
 
-# Refresh Docker Group
-newgrp docker
-
 # Start Docker
 sudo systemctl start docker
 sudo systemctl enable docker
