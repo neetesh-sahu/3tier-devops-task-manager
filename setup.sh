@@ -8,6 +8,8 @@ sudo apt install docker.io -y
 
 # Add Ubuntu User to Docker Group
 sudo usermod -aG docker ubuntu
+sudo newgrp docker
+newgrp docker
 
 # Start Docker
 sudo systemctl start docker
