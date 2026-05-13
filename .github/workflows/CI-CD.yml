@@ -45,22 +45,22 @@ jobs:
       # Build Frontend
       - name: Build Frontend Image
         run: |
-          sudo docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest ./frontend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest ./frontend
 
       # Build Backend
       - name: Build Backend Image
         run: |
-          sudo docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest ./backend
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest ./backend
 
       # Push Frontend
       - name: Push Frontend Image
         run: |
-          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
 
       # Push Backend
       - name: Push Backend Image
         run: |
-          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
 
       # SSH Deploy
       - name: Deploy to EC2
