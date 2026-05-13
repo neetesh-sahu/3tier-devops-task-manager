@@ -40,27 +40,27 @@ jobs:
       
       - name: Cleanup Docker
         run: |
-          docker system prune -af
-          docker builder prune -af
+          sudo docker system prune -af
+          sudo docker builder prune -af
       # Build Frontend
       - name: Build Frontend Image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest ./frontend
+          sudo docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest ./frontend
 
       # Build Backend
       - name: Build Backend Image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest ./backend
+          sudo docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest ./backend
 
       # Push Frontend
       - name: Push Frontend Image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
 
       # Push Backend
       - name: Push Backend Image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
 
       # SSH Deploy
       - name: Deploy to EC2
@@ -72,4 +72,4 @@ jobs:
           script: |
             cd /home/ubuntu/actions-runner/_work/3tier-devops-task-manager/3tier-devops-task-manager
 
-            docker compose up -d --build 
+            sudo docker compose up -d --build 
