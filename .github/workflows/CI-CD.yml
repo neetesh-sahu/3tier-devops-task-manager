@@ -36,12 +36,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
      
-      #cleanup docker images and builder cache to free up space on self-hosted runner
-      
-      - name: Cleanup Docker
-        run: |
-          sudo docker system prune -af
-          sudo docker builder prune -af
+     
       # Build Frontend
       - name: Build Frontend Image
         run: |
